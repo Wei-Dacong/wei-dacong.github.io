@@ -1,0 +1,16 @@
+# Custom translations (merged with Hugo Blox module i18n)
+
+- id: nav_home
+  translation: Home
+
+- id: nav_research
+  translation: Research
+
+- id: nav_news
+  translation: News
+
+- id: nav_publications
+  translation: Publications
+
+- id: nav_experience
+  translation: Experience

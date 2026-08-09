@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" role="img" aria-label="Ink wash landscape">
+  <defs>
+    <!-- 灰阶墨晕渐变 -->
+    <radialGradient id="wash1" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#2b2b2b" stop-opacity="0.12"/>
+      <stop offset="55%" stop-color="#2b2b2b" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#2b2b2b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="wash2" cx="85%" cy="18%" r="45%">
+      <stop offset="0%" stop-color="#2b2b2b" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#2b2b2b" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#2b2b2b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="wash3" cx="78%" cy="72%" r="55%">
+      <stop offset="0%" stop-color="#5f949c" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#5f949c" stop-opacity="0.015"/>
+      <stop offset="100%" stop-color="#5f949c" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 远山剪影渐变 -->
+    <linearGradient id="mountainFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b2b2b" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#2b2b2b" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="mountainNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b2b2b" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#2b2b2b" stop-opacity="0.10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 大面积留白（宣纸底由页面背景提供） -->
+
+  <!-- 墨晕 -->
+  <rect width="1440" height="810" fill="url(#wash1)"/>
+  <rect width="1440" height="810" fill="url(#wash2)"/>
+  <rect width="1440" height="810" fill="url(#wash3)"/>
+
+  <!-- 淡月（右上） -->
+  <circle cx="1180" cy="150" r="52" fill="#2b2b2b" opacity="0.07"/>
+  <circle cx="1168" cy="140" r="44" fill="#f7f4ec"/>
+
+  <!-- 远山（第一层） -->
+  <path d="M0 560 L180 470 L330 520 L520 430 L700 500 L880 440 L1050 510 L1240 455 L1440 540 L1440 810 L0 810 Z"
+        fill="url(#mountainFar)"/>
+
+  <!-- 远山（第二层，更淡） -->
+  <path d="M0 610 L240 535 L420 585 L640 505 L820 570 L1020 515 L1260 585 L1440 545 L1440 810 L0 810 Z"
+        fill="#2b2b2b" opacity="0.06"/>
+
+  <!-- 近山（第三层，略深，左低右高） -->
+  <path d="M0 700 L180 640 L360 690 L560 615 L760 680 L960 620 L1160 675 L1360 625 L1440 660 L1440 810 L0 810 Z"
+        fill="url(#mountainNear)"/>
+
+  <!-- 近景淡影 -->
+  <path d="M0 770 L300 730 L600 775 L900 725 L1200 770 L1440 735 L1440 810 L0 810 Z"
+        fill="#2b2b2b" opacity="0.10"/>
+
+  <!-- 朱砂印章（右下） -->
+  <g transform="translate(1288, 622)">
+    <rect x="0" y="0" width="64" height="64" rx="4" fill="#5f949c" opacity="0.82"/>
+    <rect x="5" y="5" width="54" height="54" rx="2" fill="none" stroke="#f7f4ec" stroke-width="2" opacity="0.9"/>
+    <!-- 篆意"韦"字简化笔画 -->
+    <path d="M32 14 v36 M22 20 h20 M22 30 h20 M22 40 h20 M18 14 c6 -2 6 6 14 4 M46 18 c-2 10 0 14 -2 22"
+          fill="none" stroke="#f7f4ec" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+schema: hugoblox/author/v1
+slug: me
+is_owner: true
+name:
+  display: Wei Dacong
+  given: Dacong
+  family: Wei
+  alternate: '韦大聪'
+  pronunciation: 'Wéi Dàcōng'
+  #pronouns: he/his
+postnominals: []
+#status:
+#  icon: "🧪"
+role: PhD Student in Computational Chemistry
+bio: |
+  I'm currently starting my PhD journey towards computational chemistry. My current research
+  interests mainly center around method development and applications in molecular
+  modeling.
+
+  Feel free to reach out! I would be delighted to connect with anyone for discussions
+  on molecular modeling and related interdisciplinary topics.
+
+#affiliations:
+#  - name: PhD Program in Chemistry
+#    url: ''
+
+links:
+  - icon: at-symbol
+    url: mailto:DacongWei@outlook.com
+    label: E-mail Me
+  - icon: brands/github
+    url: https://github.com/Wei-Dacong
+  - icon: academicons/google-scholar
+    url: https://scholar.google.com/citations?hl=en&user=sR3rxt8AAAAJ
+  - icon: academicons/orcid
+    url: https://orcid.org/0009-0000-2151-5642
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/profile/Dacong-Wei
+
+interests:
+  - Computational Chemistry
+  - Molecular Modeling
+  - Machine Learning Interatomic Potentials
+
+education:
+  - degree: M.Sc. in Chemistry
+    institution: Southern University of Science and Technology, Shenzhen, China
+    #start: 2021
+    #end: 2024
+  - degree: B.Sc. in Chemistry
+    institution: Southern University of Science and Technology, Shenzhen, China
+    #start: 2017
+    #end: 2021
+
+#languages:
+#  - name: Chinese
+#    level: 5
+#    label: Native
+#  - name: English
+#    level: 4
+#    label: Fluent

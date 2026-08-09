@@ -1,0 +1,12 @@
+{{/* 右侧固定滚动导航（单页锚点）- 仅首页注入，避免详情页死链 */}}
+{{ if .IsHome }}
+<nav id="side-nav" class="side-nav" aria-label="Section navigation">
+  <ul>
+    <li><a href="#about" data-section="about">{{ i18n "nav_home" | default "Home" }}</a></li>
+    <li><a href="#research" data-section="research">{{ i18n "nav_research" | default "Research" }}</a></li>
+    <li><a href="#news" data-section="news">{{ i18n "nav_news" | default "News" }}</a></li>
+    <li><a href="#papers" data-section="papers">{{ i18n "nav_publications" | default "Publications" }}</a></li>
+    <li><a href="#experience" data-section="experience">{{ i18n "nav_experience" | default "Experience" }}</a></li>
+  </ul>
+</nav>
+{{ end }}

@@ -1,0 +1,112 @@
+<script>
+  // Smooth-scroll to same-page / cross-page anchors + scrollspy for side-nav
+  (function () {
+    'use strict';
+
+    // No sticky header anymore, so no offset needed
+    var HEADER_OFFSET = 0;
+
+    /* ── Scrollspy state (top-level so handlers can share it) ── */
+    var navLinks = Array.prototype.slice.call(
+      document.querySelectorAll('#side-nav a[data-section]')
+    );
+    var sectionIds = navLinks.map(function (a) {
+      return a.getAttribute('data-section');
+    });
+
+    function setActive(id) {
+      navLinks.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('data-section') === id);
+      });
+    }
+
+    function scrollToHash(hash) {
+      if (!hash || hash === '#') return;
+      var el;
+      try {
+        el = document.querySelector(hash);
+      } catch (e) {
+        return;
+      }
+      if (!el) return;
+      var top = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+
+    // Normalize a URL's path: strip trailing slash so `/` === `/zh/` matching works
+    function normPath(p) {
+      var s = p || '/';
+      if (s.length > 1 && s.slice(-1) === '/') s = s.slice(0, -1);
+      return s;
+    }
+
+    // Clicking an anchor that targets the CURRENT page: smooth-scroll instead of jumping.
+    // Handles `#about`, `/#about`, `/zh/#about` (language-prefixed), etc.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href*="#"]') : null;
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href) return;
+      var hashIdx = href.indexOf('#');
+      if (hashIdx < 0) return;
+      var hash = href.slice(hashIdx);
+      if (!hash || hash === '#') return;
+
+      // Compare the link's path against the current page path.
+      // `#foo` (empty path) and `/` or `/zh/` (home) all count as current page.
+      var linkPath = '';
+      try {
+        linkPath = new URL(href, window.location.href).pathname;
+      } catch (err) {
+        linkPath = href.slice(0, hashIdx);
+      }
+      var curPath = normPath(window.location.pathname);
+      var targetPath = normPath(linkPath);
+      var samePage = linkPath === '' || targetPath === curPath;
+      if (!samePage) return; // cross-page anchor: let the browser navigate
+
+      e.preventDefault();
+      scrollToHash(hash);
+      history.replaceState(null, '', hash);
+      setActive(hash.slice(1));
+    });
+
+    // Arriving on a page with an #anchor in the URL (e.g. cross-page nav /#about)
+    function onLoad() {
+      if (window.location.hash) {
+        // Wait for layout/fonts to settle so positions are accurate
+        setTimeout(function () {
+          scrollToHash(window.location.hash);
+          setActive(window.location.hash.slice(1));
+        }, 150);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', onLoad);
+    } else {
+      onLoad();
+    }
+
+    // Scrollspy: highlight the section currently in view
+    if (sectionIds.length) {
+      function onScroll() {
+        var scrollPos = window.pageYOffset;
+        var current = sectionIds[0];
+        for (var i = 0; i < sectionIds.length; i++) {
+          var el = document.getElementById(sectionIds[i]);
+          if (el && el.offsetTop - 80 <= scrollPos) {
+            current = sectionIds[i];
+          }
+        }
+        // Near page bottom → force last section active
+        if (window.innerHeight + scrollPos >= document.body.scrollHeight - 4) {
+          current = sectionIds[sectionIds.length - 1];
+        }
+        setActive(current);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+  })();
+</script>

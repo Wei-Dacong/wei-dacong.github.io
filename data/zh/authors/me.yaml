@@ -1,0 +1,24 @@
+name:
+  display: 韦大聪
+  #alternate: 'Wei Dacong'
+role: 计算化学博士研究生
+bio: |
+  我的研究方向为计算化学，目前的研究兴趣主要聚焦于**分子模拟中的方法开发与应用**。
+
+  欢迎对分子模拟及相关交叉领域感兴趣的同学或研究人员联系交流！
+
+education:
+  - degree: 硕士，化学
+    institution: 南方科技大学
+    #start: 2021
+    #end: 2024
+  - degree: 本科，化学
+    institution: 南方科技大学
+    #start: 2017
+    #end: 2021
+
+interests:
+  - 计算化学
+  - 分子模拟
+  - 机器学习势能
+

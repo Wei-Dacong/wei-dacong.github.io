@@ -1,0 +1,16 @@
+# Custom translations (merged with Hugo Blox module i18n)
+
+- id: nav_home
+  translation: 首页
+
+- id: nav_research
+  translation: 研究
+
+- id: nav_news
+  translation: 动态
+
+- id: nav_publications
+  translation: 论文
+
+- id: nav_experience
+  translation: 经历

@@ -1,0 +1,104 @@
+{{ define "main" }}
+<div class="max-w-prose mx-auto flex justify-center">
+  <article class="prose prose-slate lg:prose-xl dark:prose-invert">
+    <h1 class="lg:text-6xl">{{ .Title }}</h1>
+    {{ .Content }}
+  </article>
+</div>
+
+{{ $view := .Params.view | default "card" }}
+{{ $block := . }}
+
+{{/* 多语言：把其他语言（默认英文）的论文合并进来，保证 zh 站点也能列出论文 */}}
+{{ $pages := .Pages.ByDate.Reverse }}
+{{ range .Translations }}
+  {{ $pages = $pages | lang.Merge .Pages.ByDate.Reverse }}
+{{ end }}
+
+{{/* 收集年份与类型，用于筛选下拉框 */}}
+{{ $years := slice }}
+{{ $types := slice }}
+{{ range $pages }}
+  {{ $y := .Date.Format "2006" }}
+  {{ if not (in $years $y) }}{{ $years = $years | append $y }}{{ end }}
+  {{ $t := index .Params.publication_types 0 | default "article" }}
+  {{ if not (in $types $t) }}{{ $types = $types | append $t }}{{ end }}
+{{ end }}
+
+{{ $typeLabels := dict
+  "article-journal" "Journal Article"
+  "paper-conference" "Conference Paper"
+  "thesis" "Thesis"
+  "report" "Report"
+  "book" "Book"
+  "chapter" "Book Chapter"
+  "manuscript" "Manuscript"
+  "article" "Preprint / Article"
+}}
+
+<div class="flex flex-col items-center" x-data="pubFilter()">
+
+  {{/* 筛选工具栏 */}}
+  <div class="w-full max-w-3xl flex flex-col sm:flex-row gap-3 items-stretch sm:items-center px-4 py-6">
+    <input type="search" x-model="q" placeholder="🔍 {{ i18n "search_placeholder" | default "Search title, authors, venue..." }}"
+      class="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+    <select x-model="year"
+      class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+      <option value="all">📅 {{ i18n "all_years" | default "All Years" }}</option>
+      {{ range $years }}
+      <option value="{{ . }}">{{ . }}</option>
+      {{ end }}
+    </select>
+    <select x-model="type"
+      class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+      <option value="all">🗂 {{ i18n "all_types" | default "All Types" }}</option>
+      {{ range $types }}
+      <option value="{{ . }}">{{ index $typeLabels . | default . }}</option>
+      {{ end }}
+    </select>
+    <button @click="q=''; year='all'; type='all'"
+      class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+      {{ i18n "reset" | default "Reset" }}
+    </button>
+  </div>
+
+  {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" . "view" $view) }}
+
+  <div class="w-full max-w-3xl">
+    {{ range $pages }}
+    <div x-show="passes($el)"
+         data-year="{{ .Date.Format "2006" }}"
+         data-type="{{ index .Params.publication_types 0 | default "article" }}">
+      {{ partial "functions/render_view" (dict "page" . "item" . "view" $view "index" 0) }}
+    </div>
+    {{ end }}
+    {{/* 空结果提示 */}}
+    <div x-show="!passesAny()" class="py-16 text-center text-gray-500 dark:text-gray-400">
+      {{ i18n "no_results" | default "No matching publications." }}
+    </div>
+  </div>
+
+  {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
+
+</div>
+
+<script>
+function pubFilter() {
+  return {
+    q: '',
+    year: 'all',
+    type: 'all',
+    passes(el) {
+      if (this.year !== 'all' && el.dataset.year !== this.year) return false;
+      if (this.type !== 'all' && el.dataset.type !== this.type) return false;
+      if (this.q.trim() && !el.textContent.toLowerCase().includes(this.q.trim().toLowerCase())) return false;
+      return true;
+    },
+    passesAny() {
+      return [...this.$root.querySelectorAll('[data-year]')].some(el => this.passes(el));
+    }
+  }
+}
+</script>
+
+{{ end }}

@@ -1,0 +1,261 @@
+/* ═══════════════════════════════════════════════════════════════
+   HUGO BLOX — 水墨现代融合 (Ink-wash × Modern) 设计系统
+   风格 D：灰阶墨晕 + 楷体标题 + 现代无衬线正文 + 天青印章点缀
+   自动被 site_head.html 注入（assets/css/custom.css 约定路径）
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. 基础：平滑滚动 + 锚点偏移（与 body-end JS 双保险）── */
+html {
+  scroll-behavior: smooth;
+}
+section[id] {
+  scroll-margin-top: 24px; /* 无顶部导航，仅少量留白 */
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── 2. 字体：标题楷体 / 正文现代无衬线 ── */
+/* 默认（中文/通用）：标题楷体，正文中文优先 */
+:root {
+  --ink-kai: "KaiTi", "STKaiti", "KaiTi_SC", "Noto Serif SC", "Source Han Serif SC",
+    "Songti SC", "SimSun", serif;
+  --ink-sans: "PingFang SC", "Microsoft YaHei", "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  --ink-accent: #5f949c; /* 天青（雨过天青） */
+  --ink-accent-soft: #88ada6; /* 天青淡变体 */
+  --ink-charcoal: #2b2b2b;  /* 墨黑 */
+  --ink-wash: rgba(43, 43, 43, 0.055); /* 墨晕淡色 */
+  --ink-wash-strong: rgba(43, 43, 43, 0.12);
+}
+
+/* 英文模式：标题用西文衬线（学术优雅），正文西文优先 */
+html[lang="en-us"] {
+  --ink-kai: "Lora", Georgia, "Times New Roman", "Nimbus Roman No9 L", serif;
+  --ink-sans: "Segoe UI", "Helvetica Neue", Arial,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 品牌名与一级标题用楷体，凸显书卷气 */
+.navbar-brand,
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--ink-kai);
+}
+
+/* 正文现代无衬线 */
+body,
+p,
+li,
+article,
+blockquote {
+  font-family: var(--ink-sans);
+}
+
+/* ── 3. Hero（#about）墨晕背景 + 山峦剪影 ── */
+#about .resume-biography {
+  position: relative;
+}
+#about .resume-biography::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* 墨晕：多层径向渐变模拟墨滴扩散 */
+    radial-gradient(circle at 12% 18%, var(--ink-wash) 0%, transparent 42%),
+    radial-gradient(circle at 88% 12%, var(--ink-wash) 0%, transparent 38%),
+    radial-gradient(circle at 82% 78%, var(--ink-wash) 0%, transparent 46%),
+    radial-gradient(circle at 18% 82%, var(--ink-wash-strong) 0%, transparent 40%),
+    radial-gradient(circle at 55% 45%, rgba(95, 148, 156, 0.028) 0%, transparent 55%);
+  pointer-events: none;
+}
+/* 底部淡墨山峦剪影由 ink-hero.svg banner 承担，此处仅保留墨晕氛围 */
+
+/* ── 4. 区块标题：天青印章竖线 + 底部细墨线 ── */
+.hbb-section div.text-3xl,
+.hbb-section h2.text-3xl {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.6rem;
+}
+/* 标题左侧天青印章短竖 */
+.hbb-section div.text-3xl::before,
+.hbb-section h2.text-3xl::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  margin-right: 0.7rem;
+  vertical-align: -0.15em;
+  background: var(--ink-accent);
+  border-radius: 1px;
+  opacity: 0.85;
+}
+/* 标题下方细墨线 */
+.hbb-section div.text-3xl::after,
+.hbb-section h2.text-3xl::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--ink-charcoal) 0%, rgba(43, 43, 43, 0.12) 62%, transparent 100%);
+}
+
+/* ── 5. 导航：品牌楷体 + 悬停天青下划墨点 ── */
+.navbar-brand {
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+}
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--ink-accent);
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── 6. 卡片：宣纸留白 + 细墨线框 + 悬停墨晕 ── */
+/* 仅作用于卡片容器：排除 <a>（CTA 按钮带渐变背景）、Alpine tooltip（x-show 的 bg-gray-900）
+   注意：tooltip 排除依赖其 x-show 属性与 rounded 类同元素，模板变更时需复核 */
+.hbb-section .group.rounded-xl:not(a):not([x-show]),
+.hbb-section .rounded-xl:not(a):not([x-show]),
+.hbb-section .rounded-lg:not(a):not([x-show]),
+.hbb-section .rounded-2xl:not(a):not([x-show]),
+.article-grid .card:not(a):not([x-show]),
+.hbb-section .card:not(a):not([x-show]) {
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(43, 43, 43, 0.10);
+  box-shadow: 0 1px 3px rgba(43, 43, 43, 0.04);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.hbb-section .group.rounded-xl:not(a):not([x-show]):hover,
+.hbb-section .rounded-xl:not(a):not([x-show]):hover,
+.hbb-section .rounded-lg:not(a):not([x-show]):hover,
+.hbb-section .rounded-2xl:not(a):not([x-show]):hover,
+.article-grid .card:not(a):not([x-show]):hover,
+.hbb-section .card:not(a):not([x-show]):hover {
+  border-color: color-mix(in srgb, var(--ink-accent) 45%, transparent);
+  box-shadow:
+    0 8px 24px rgba(43, 43, 43, 0.08),
+    /* 右下角墨晕 */
+    radial-gradient(ellipse at 90% 110%, var(--ink-wash) 0%, transparent 60%);
+  transform: translateY(-2px);
+}
+
+/* ── 7. 头像：细水墨环 + 柔和墨晕 ── */
+.avatar-wrapper img.avatar {
+  border: 3px solid rgba(43, 43, 43, 0.22) !important;
+  box-shadow:
+    0 6px 18px rgba(43, 43, 43, 0.12),
+    0 0 0 6px rgba(95, 148, 156, 0.06) !important;
+  border-radius: 50%;
+}
+
+/* 头像状态徽章（如 🧪）：天青细环 */
+.avatar-emoji {
+  border: 1px solid rgba(95, 148, 156, 0.35);
+  background: rgba(247, 244, 236, 0.92);
+  box-shadow: 0 2px 8px rgba(43, 43, 43, 0.10);
+  border-radius: 9999px;
+  padding: 0.15rem;
+}
+
+/* ── 7b. Hero 水墨横幅（ink-hero.svg）── */
+#about .resume-biography .relative.w-full.h-64 {
+  border-radius: 14px;
+  border: 1px solid rgba(43, 43, 43, 0.10);
+  box-shadow: 0 4px 16px rgba(43, 43, 43, 0.08);
+  overflow: hidden;
+}
+
+/* ── 8. 论文引用列表：天青年份点缀 ── */
+.hbb-section .space-y-6 a.text-primary-600,
+.hbb-section .space-y-3 a.text-primary-600 {
+  color: var(--ink-accent);
+}
+
+/* ── 9. 页脚：细墨线顶部分隔 ── */
+.page-footer {
+  border-top: 1px solid rgba(43, 43, 43, 0.10);
+  margin-top: 2rem;
+}
+
+/* ── 10. 链接主色统一天青 ── */
+a.text-primary-600,
+a:hover.text-primary-600 {
+  color: var(--ink-accent);
+}
+
+/* ── 12. Research 区块加宽显示 ── */
+#research .max-w-prose {
+  max-width: 48rem; /* 加宽至 max-w-3xl 级别，文字行更舒展 */
+}
+
+/* ── 11. 右侧固定滚动导航（side-nav）── */
+.side-nav {
+  position: fixed;
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  max-width: 160px;
+}
+.side-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+.side-nav a {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: rgba(43, 43, 43, 0.55);
+  border-right: 2px solid transparent;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  border-radius: 4px;
+}
+.side-nav a:hover {
+  color: var(--ink-accent);
+}
+.side-nav a.active {
+  color: var(--ink-accent);
+  border-right-color: var(--ink-accent);
+  background: rgba(95, 148, 156, 0.05);
+}
+
+/* 窄屏隐藏右侧导航，保持极简 */
+@media (max-width: 1023px) {
+  .side-nav {
+    display: none;
+  }
+}
